@@ -36,6 +36,7 @@ function getUserInfo() {
     });
     userList.innerHTML = _data;
   });
+  document.getElementById("view").innerHTML = `Showing page ${pageNo}`
 }
 
 function next() {
@@ -43,7 +44,9 @@ function next() {
   buttonController()
   if (pageNo % 2 == 1) {
     getUserInfo(pageNo);
+  console.log('page',pageNo) ;
   } else {
+    console.log('page',pageNo) ;
     let _data = '';
     const html = response[pageNo]?.map((item) => {
       let info = `<tr>
@@ -55,10 +58,15 @@ function next() {
     });
     userList.innerHTML = _data;
   }
+
+  document.getElementById("view").innerHTML = `Showing page ${pageNo}`
+
 }
 
 function previous() {
   if (pageNo > 1) {
+    console.log('page',pageNo) ;
+
     pageNo = pageNo - 1;
     getUserInfo(pageNo)
     let _data = '';
@@ -73,6 +81,7 @@ function previous() {
     userList.innerHTML = _data;
   }
   buttonController()
+  document.getElementById("view").innerHTML = `Showing page ${pageNo}`
 }
 
 function buttonController () {
