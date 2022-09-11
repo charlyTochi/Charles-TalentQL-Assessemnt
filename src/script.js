@@ -1,9 +1,11 @@
 let userList = document.querySelector(".users");
 let val = document.querySelector("#prev");
+let loader = document.querySelector(".loader");
 
 let pageNo = 1;
 let response = {};
 function getUserInfo() {
+
     buttonController();
   // create an XMLHttpRequest Object
   let request = new XMLHttpRequest();
@@ -13,24 +15,26 @@ function getUserInfo() {
     "GET",
     `https://randomapi.com/api/8csrgnjw?key=LEIX-GF3O-AG7I-6J84&page=${pageNo}`
   );
+  loader.style.display = 'block'
 
   // send the request
   request.send();
 
   request.addEventListener("load", function () {
+  loader.style.display = 'none'
+
     let { results } = JSON.parse(request.responseText);
-
     response = results[0];
-
-    const html = response[pageNo].map((item) => {
-      return ` <tr>
+    let _data = '';
+    const html = response[pageNo]?.map((item) => {
+      let info = `<tr>
         <td>${item.row}</td>
         <td>${item.gender}</td>
         <td>${item?.age}</td>
-       </tr>
-    `;
+       </tr>`;
+       _data += info;
     });
-    userList.innerHTML = html;
+    userList.innerHTML = _data;
   });
 }
 
@@ -40,31 +44,33 @@ function next() {
   if (pageNo % 2 == 1) {
     getUserInfo(pageNo);
   } else {
-    const html = response[pageNo].map((item) => {
-      return ` <tr>
+    let _data = '';
+    const html = response[pageNo]?.map((item) => {
+      let info = `<tr>
         <td>${item?.row}</td>
         <td>${item?.gender}</td>
         <td>${item?.age}</td>
-       </tr>
-    `;
+       </tr>`;
+       _data += info;
     });
-    userList.innerHTML = html;
+    userList.innerHTML = _data;
   }
 }
 
 function previous() {
-
   if (pageNo > 1) {
     pageNo = pageNo - 1;
-    const html = response[pageNo].map((item) => {
-      return ` <tr>
+    getUserInfo(pageNo)
+    let _data = '';
+    const html = response[pageNo]?.map((item) => {
+      let info = `<tr>
         <td>${item?.row}</td>
         <td>${item?.gender}</td>
         <td>${item?.age}</td>
-       </tr>
-    `;
+       </tr>`;
+       _data += info;
     });
-    userList.innerHTML = html;
+    userList.innerHTML = _data;
   }
   buttonController()
 }
